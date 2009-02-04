@@ -25,10 +25,30 @@
 //
 #endregion
 
-using System.Reflection;
+namespace NCrontab
+{
+    #region Imports
 
-[assembly: AssemblyTitle("NCrontab.Tests")]
-[assembly: AssemblyDescription("NUnit tests for NCrontab")]
+    using System;
+    using System.Diagnostics;
 
-[assembly: AssemblyVersion("0.2.0.0")]
-[assembly: AssemblyFileVersion("0.2.10904.0")]
+    #endregion
+
+    public delegate void ExceptionHandler(ExceptionProvider provider);
+    public delegate Exception ExceptionProvider();
+
+    internal static class ErrorHandling
+    {
+        public static readonly ExceptionHandler Throw = provider => { throw provider(); };
+
+        internal static ExceptionProvider OnError(ExceptionProvider provider, ExceptionHandler handler)
+        {
+            Debug.Assert(provider != null);
+
+            if (handler != null)
+                handler(provider);
+            
+            return provider;
+        }
+    }
+}
