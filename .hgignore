@@ -1,0 +1,13 @@
+syntax: glob
+bin/**
+*.dll
+*.pdb
+*.user
+*.cache
+*.suo
+obj/**
+_ReSharper.*
+*.orig
+dist/**
+pkg/base/**
+*.nupkg
